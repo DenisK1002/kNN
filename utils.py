@@ -2,7 +2,7 @@ import math
 import random
 
 class Dataset():
-    def __init__(self, dataset_filename, max_size=1000):
+    def __init__(self, dataset_filename, max_size=5000):
         self.dataset_filename = dataset_filename
 
         # max size of dataset
@@ -16,15 +16,13 @@ class Dataset():
         Default ratio is 80% train 20% test.
         """
 
-        random_indizes = random.choices(range(0, len(self.datapoints)), k=int(len(self.datapoints)*(1-ratio)))
+        random_indizes = random.choices(range(0, len(self.datapoints)-1), k=int(len(self.datapoints)*(1-ratio)))
         test = [self.datapoints[i] for i in random_indizes]
         random_indizes.sort(reverse=True)
-        for i in random_indizes:
+        for i in random_indizes:    
             self.datapoints.pop(i)
         
-        train = Dataset(self.dataset_filename, self.max_size)
-        train.datapoints = self.datapoints
-        return train, test
+        return self, test
 
     def init_datapoints(self) -> list:
         """

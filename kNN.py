@@ -9,32 +9,34 @@ class kNN():
     def __init__(self, dataset_filename = ""):
         self.dataset_filename = dataset_filename
         self.model = None
-        self.fit()
 
     def evaluate(self, test_data):
         """
         Evaluates kNN using test error 
         """
+        print("Evaluating Model...", end="")
         correctly_classified = 0
         for datapoint in test_data:
             predicted_class = self.predict(datapoint)
             if predicted_class == datapoint.category:
                 correctly_classified += 1
-        
+        print(" Done.")
+
+        print("\n----Results----\n")
         print(f"Predicted {correctly_classified} out of {len(test_data)} correctly")
         print(f"Test error rate: {(len(test_data)-correctly_classified)/len(test_data)}")
 
-    def fit(self, k=1) -> Dataset:
+    def fit(self):
         """
         Fits the training data to the model.
         """
-        print(f"Training kNN with k = {k}")
+        print(f"\nTraining kNN...", end="")
         dataset = Dataset(self.dataset_filename)
         dataset_train, dataset_test = dataset.split_train_test()
         self.model = dataset_train
-        self.evaluate(dataset_test)
+        print(" Done.")
 
-        return dataset_train
+        self.evaluate(dataset_test)
 
     def predict(self, datapoint, k=1):
         """
@@ -48,7 +50,9 @@ class kNN():
             else:
                 count_classes.update({n.category: 1})
         
+        # return the class with the highest occurence in respect to datapoints neighbours
         return list(sorted(count_classes.items(), key=lambda c: c[1], reverse=True))[0][0]
+
 
 
 
