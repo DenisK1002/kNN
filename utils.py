@@ -17,14 +17,6 @@ class Dataset():
         """
 
         random_indizes = random.choices(range(0, len(self.datapoints)), k=int(len(self.datapoints)*(1-ratio)))
-        # for _ in range(int(len(self.datapoints)*1-ratio)):
-        #     random_indizes.append(random.randint(0, len(self.datapoints)))
-        # random_indizes = [random.randint(0, len(self.datapoints)) for _ in range()]
-        # test = random.choices(self.datapoints, k=int(len(self.datapoints)*(1-ratio)))
-        # test = [
-        #     self.datapoints[random.randint(0, len(self.datapoints))]    # random datapoints
-        #     for _ in range(0, len(self.datapoints)*(1-ratio))
-        # ]
         test = [self.datapoints[i] for i in random_indizes]
         random_indizes.sort(reverse=True)
         for i in random_indizes:
@@ -62,7 +54,7 @@ class Dataset():
         if neighbours[0] == datapoint:
             neighbours.pop(0)
 
-        return neighbours
+        return neighbours[:k]
 
 class DistanceMethod:
     manhattan = "manhattan"
@@ -102,11 +94,11 @@ class DataPoint():
         else:
             raise ValueError(distance_method)
     
-    def __eq__(self, __o: object) -> bool:
-        return all([f == f__o for f, f__o in zip(self.features, __o.features)]) and all([c == c__o for c, c__o in zip(self.category, __o.category)])
+    # def __eq__(self, __o: object) -> bool:
+    #     return all([f == f__o for f, f__o in zip(self.features, __o.features)]) and all([c == c__o for c, c__o in zip(self.category, __o.category)])
     
-    def __ne__(self, __o: object) -> bool:
-        return not self.__eq__(__o)
+    # def __ne__(self, __o: object) -> bool:
+    #     return not self.__eq__(__o)
 
     def __repr__(self) -> str:
         return f"{self.features} | {self.category}"

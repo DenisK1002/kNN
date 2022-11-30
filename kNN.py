@@ -33,9 +33,6 @@ class kNN():
         dataset_train, dataset_test = dataset.split_train_test()
         self.model = dataset_train
         self.evaluate(dataset_test)
-        
-        # print(dataset_test[0])
-        # print(self.predict(dataset_test[0]))
 
         return dataset_train
 
