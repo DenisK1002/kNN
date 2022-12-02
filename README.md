@@ -1,6 +1,6 @@
 # k-Nearest-Neighbour Classifier Algorithm
-This was implemented as a part of my studies at OTH Regensburg
-Sake of the program is to test different datasets on the kNN algorithm and evaluate its performance
+This was implemented as a part of my studies at OTH Regensburg. <br/>
+Sake of the program is to test different datasets on the kNN algorithm and evaluate its performance.
 
 ## Usage
 It can be used entirely by command-line <br/>
