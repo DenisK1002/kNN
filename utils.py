@@ -17,12 +17,12 @@ class Dataset():
 
         self.datapoints = self.init_datapoints()
 
-    def split_train_test(self, ratio=0.8):
+    def split_train_test(self, ratio=0.8, test_datapoint_id=0):
         """
-        Splits the dataset into a train and a test set.
+        Splits the dataset into a train and a test set. (cross-validation)
         Default ratio is 80% train 20% test.
         """
-
+        # splits dataset randomly by ratio
         random_indizes = random.choices(range(0, len(self.datapoints)-1), k=int(len(self.datapoints)*(1-ratio)))
         test = [self.datapoints[i] for i in random_indizes]
         random_indizes.sort(reverse=True)

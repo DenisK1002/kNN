@@ -10,7 +10,7 @@ Example <br/>
 Arguments:
 1. path to dataset as csv file
 2. the amount of neighbours a datapoint needs to consider
-3. the distance calulation method. There is euclidean and manhattan as valid distance arguments.
+3. the distance calculation method. There is euclidean and manhattan as valid distance arguments.
 
 The default parameters are "", 1, "euclidean"
 
@@ -32,3 +32,9 @@ Evaluating Model... Done.
 Predicted 1 out of 1 correctly
 Test error rate: 0.0
 ```
+
+Since in the agk-ue08-p1.csv are 5 datapoints, 4 of them are used for training and 1 is used for testing.
+
+### Splitting Dataset into train and test data
+As mentioned the dataset is split into train and test data in the [split_train_test()](/utils.py?line=20) function in the utils.py utility file.
+As you may observe the selection of test data is random for the sake of avoiding repetition when executing the algorithm with the same parameters multiple times.

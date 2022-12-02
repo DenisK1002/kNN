@@ -13,7 +13,7 @@ class kNN():
         self.k = k
         self.check_parameters()
         self.fit()
-        
+
     def check_parameters(self):
         """
         Checks if input parameters are valid.
@@ -38,9 +38,12 @@ class kNN():
                 correctly_classified += 1
         print(" Done.")
 
+        evaluation = (len(test_data)-correctly_classified)/len(test_data)
         print("\n----Results----\n")
         print(f"Predicted {correctly_classified} out of {len(test_data)} correctly")
-        print(f"Test error rate: {(len(test_data)-correctly_classified)/len(test_data)}")
+        print(f"Test error rate: {evaluation}")
+
+        return evaluation
 
     def fit(self):
         """
@@ -52,7 +55,7 @@ class kNN():
         self.model = dataset_train
         print(" Done.")
 
-        self.evaluate(dataset_test)
+        return self.evaluate(dataset_test)
 
     def predict(self, datapoint, k):
         """
