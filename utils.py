@@ -16,8 +16,10 @@ class Dataset():
         self.max_size = max_size
 
         self.datapoints = self.init_datapoints()
+        
+        self.header = []
 
-    def split_train_test(self, ratio=0.8, test_datapoint_id=0):
+    def split_train_test(self, ratio=0.8):
         """
         Splits the dataset into a train and a test set. (cross-validation)
         Default ratio is 80% train 20% test.
@@ -38,8 +40,8 @@ class Dataset():
         """
         datapoints = []
         with open(self.dataset_filename, "r") as csv:
-            header = csv.readline().split(",")
-
+            self.header = csv.readline().split(",")
+            
             for _ in range(self.max_size):
                 row = csv.readline().rstrip("\n")
                 if row == "":
@@ -47,7 +49,7 @@ class Dataset():
                 point = row.split(",")
                 features = list(map(float, point[:-1]))
                 category = int(point[-1])
-                datapoints.append(DataPoint(features, category, header))
+                datapoints.append(DataPoint(features, category))
                 
         return datapoints
     
@@ -64,12 +66,11 @@ class Dataset():
 class DataPoint():
     """
     Class Representing a Datapoint in the dataset.
-    Consisting of its features and the according categorie the datapoint belongs to.
+    Consisting of its features and the according category the datapoint belongs to.
     """
-    def __init__(self, features: list, category: int, category_identifier: list):
+    def __init__(self, features: list, category: int):
         self.features = features
         self.category = category
-        self.category_identifier = []
 
     def euclidean_distance(self, datapoint_2) -> float:
         """
