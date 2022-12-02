@@ -1,8 +1,15 @@
 import math
 import random
 
+class DistanceMethod:
+    manhattan = "manhattan"
+    euclidean = "euclidean"
+
+    def get_methods() -> list:
+        return ["manhattan", "euclidean"]
+
 class Dataset():
-    def __init__(self, dataset_filename, max_size=5000):
+    def __init__(self, dataset_filename, max_size=500):
         self.dataset_filename = dataset_filename
 
         # max size of dataset
@@ -44,19 +51,15 @@ class Dataset():
                 
         return datapoints
     
-    def k_Neighbours(self, datapoint, k):
+    def k_Neighbours(self, datapoint, k, distance_method=DistanceMethod.euclidean):
         """
         Returns k closest neighbours to datapoint in ascending order
         """
-        neighbours = list(sorted(self.datapoints, key=lambda d: datapoint.distance(d, DistanceMethod.euclidian)))
+        neighbours = list(sorted(self.datapoints, key=lambda d: datapoint.distance(d, distance_method)))
         if neighbours[0] == datapoint:
             neighbours.pop(0)
 
         return neighbours[:k]
-
-class DistanceMethod:
-    manhattan = "manhattan"
-    euclidian = "euclidian"
 
 class DataPoint():
     """
@@ -68,35 +71,28 @@ class DataPoint():
         self.category = category
         self.category_identifier = []
 
-    def euclidian_distance(self, datapoint_2) -> float:
+    def euclidean_distance(self, datapoint_2) -> float:
         """
-        Calculates the euclidian distance to another point.
+        Calculates the euclidean distance to another point.
         """
         return math.sqrt(sum([pow((p-q), 2) for p, q in zip(self.features, datapoint_2.features)]))
 
     def manhattan_distance(self, datapoint_2) -> float:
         """
-        Calculates the euclidian distance to another point.
+        Calculates the manhattan distance to another point.
         """
         return sum([abs(p - q) for p, q in zip(self.features, datapoint_2.features)])
 
     def distance(self, datapoint_2, distance_method: DistanceMethod):
         """
-        Returns distance [Manhattan or euclidian] to another point.
+        Returns distance [Manhattan or euclidean] to another point.
         """
-
-        if distance_method == DistanceMethod.euclidian:
-            return self.euclidian_distance(datapoint_2)
+        if distance_method == DistanceMethod.euclidean:
+            return self.euclidean_distance(datapoint_2)
         elif distance_method == DistanceMethod.manhattan:
             return self.manhattan_distance(datapoint_2)
         else:
             raise ValueError(distance_method)
-    
-    # def __eq__(self, __o: object) -> bool:
-    #     return all([f == f__o for f, f__o in zip(self.features, __o.features)]) and all([c == c__o for c, c__o in zip(self.category, __o.category)])
-    
-    # def __ne__(self, __o: object) -> bool:
-    #     return not self.__eq__(__o)
 
     def __repr__(self) -> str:
         return f"{self.features} | {self.category}"

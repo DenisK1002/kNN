@@ -6,9 +6,25 @@ from utils import *
 import sys
 
 class kNN():
-    def __init__(self, dataset_filename = ""):
+    def __init__(self, dataset_filename = "", k = 1, distance_method = "euclidean"):
         self.dataset_filename = dataset_filename
         self.model = None
+        self.distance_method = distance_method
+        self.k = k
+        self.check_parameters()
+        self.fit()
+        
+    def check_parameters(self):
+        """
+        Checks if input parameters are valid.
+        Exits if invalid.
+        """
+        valid_dataset_filename = self.dataset_filename.split(".")[-1] == "csv"
+        valid_k = type(self.k) == int and self.k > 0
+        valid_distance_method = self.distance_method in DistanceMethod.get_methods()
+        if not (valid_dataset_filename and valid_k and valid_distance_method):
+            print("One or more arguments invalid. Check them!")
+            exit(1)
 
     def evaluate(self, test_data):
         """
@@ -17,7 +33,7 @@ class kNN():
         print("Evaluating Model...", end="")
         correctly_classified = 0
         for datapoint in test_data:
-            predicted_class = self.predict(datapoint)
+            predicted_class = self.predict(datapoint, self.k)
             if predicted_class == datapoint.category:
                 correctly_classified += 1
         print(" Done.")
@@ -38,11 +54,11 @@ class kNN():
 
         self.evaluate(dataset_test)
 
-    def predict(self, datapoint, k=1):
+    def predict(self, datapoint, k):
         """
         Classifies datapoint to a class using 
         """
-        neighbours = self.model.k_Neighbours(datapoint, k)
+        neighbours = self.model.k_Neighbours(datapoint, k, self.distance_method)
         count_classes = {}
         for n in neighbours:
             if n.category in count_classes.keys():
@@ -57,7 +73,8 @@ class kNN():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Please enter a filename to a csv document")
+    if len(sys.argv) != 4:
+        print("3 additional Parameters needed:")
+        print("filename, k, distance_method")
 
     kNN(sys.argv[1])
