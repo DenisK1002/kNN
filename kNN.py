@@ -9,7 +9,7 @@ class kNN():
     def __init__(self, max_size, dataset_filename = "", k = 1, distance_method = "euclidean"):
         self.max_size = int(max_size)
         self.dataset_filename = dataset_filename
-        self.model = None
+        self.dataset = None
         self.distance_method = distance_method
         self.k = int(k)
         self.check_parameters()
@@ -51,20 +51,18 @@ class kNN():
         """
         Fits the training data to the model.
         """
-        print(f"\nTraining kNN...", end="")
+        print(f"\nTraining Model...", end="")
         dataset = Dataset(self.dataset_filename, self.max_size)
-        dataset_train, dataset_test = dataset.split_train_test()
-        self.model = dataset_train
+        self.dataset = dataset
         print(" Done.")
         
         self.leave_one_out_experiment()
-        
 
-    def predict(self, datapoint, k) -> int:
+    def predict(self, dataset, datapoint, k) -> int:
         """
         Classifies datapoint to a class using model
         """
-        neighbours = self.model.k_Neighbours(datapoint, k, self.distance_method)
+        neighbours = dataset.k_Neighbours(datapoint, k, self.distance_method)
         count_classes = {}
         for n in neighbours:
             if n.category in count_classes.keys():
@@ -80,15 +78,14 @@ class kNN():
         Performs leave one out experiment over all datapoints in the dataset.
         It tests the classification prediction for each datapoint with given k.
         """
-        dataset = Dataset(self.dataset_filename, self.max_size)
         correctly_classified = 0
-        for i in range(len(dataset)):
-            train, test = dataset.leave_one_out(i)
-            if self.predict(test, self.k) == test.category:
+        for i in range(len(self.dataset)):
+            train, test = self.dataset.leave_one_out(i)
+            if self.predict(train, test, self.k) == test.category:
                 correctly_classified += 1
         
-        percentage = correctly_classified / len(dataset)
-        print(f"{correctly_classified} / {len(dataset)} correctly classified ({percentage:.4f})")
+        percentage = correctly_classified / len(self.dataset)
+        print(f"{correctly_classified} / {len(self.dataset)} correctly classified ({percentage:.4f})")
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
