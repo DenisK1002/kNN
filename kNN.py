@@ -7,11 +7,11 @@ import sys
 
 class kNN():
     def __init__(self, max_size, dataset_filename = "", k = 1, distance_method = "euclidean"):
-        self.max_size = max_size
+        self.max_size = int(max_size)
         self.dataset_filename = dataset_filename
         self.model = None
         self.distance_method = distance_method
-        self.k = k
+        self.k = int(k)
         self.check_parameters()
         self.fit()
 
@@ -20,14 +20,15 @@ class kNN():
         Checks if input parameters are valid.
         Exits if invalid.
         """
+        valid_size = self.max_size > 0
         valid_dataset_filename = self.dataset_filename.split(".")[-1] == "csv"
         valid_k = type(self.k) == int and self.k > 0
         valid_distance_method = self.distance_method in DistanceMethod.get_methods()
-        if not (valid_dataset_filename and valid_k and valid_distance_method):
+        if not (valid_size and valid_dataset_filename and valid_k and valid_distance_method):
             print("One or more arguments invalid. Check them!")
             exit(1)
 
-    def evaluate(self, test_data):
+    def evaluate(self, test_data) -> float:
         """
         Evaluates kNN using test error 
         """
@@ -55,10 +56,11 @@ class kNN():
         dataset_train, dataset_test = dataset.split_train_test()
         self.model = dataset_train
         print(" Done.")
+        
+        self.leave_one_out_experiment()
+        
 
-        #return self.evaluate(dataset_test)
-
-    def predict(self, datapoint, k):
+    def predict(self, datapoint, k) -> int:
         """
         Classifies datapoint to a class using model
         """
@@ -89,8 +91,8 @@ class kNN():
         print(f"{correctly_classified} / {len(dataset)} correctly classified ({percentage:.4f})")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("3 additional Parameters needed:")
-        print("filename, k, distance_method")
+    if len(sys.argv) != 5:
+        print("4 additional Parameters needed:")
+        print("max-size, filename, k, distance_method")
 
-    kNN(sys.argv[1])
+    kNN(*sys.argv[1:])

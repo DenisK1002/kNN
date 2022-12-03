@@ -68,7 +68,7 @@ class Dataset():
                 
         return datapoints
     
-    def k_Neighbours(self, datapoint, k, distance_method=DistanceMethod.euclidean):
+    def k_Neighbours(self, datapoint, k, distance_method=DistanceMethod.euclidean) -> list:
         """
         Returns k closest neighbours to datapoint in ascending order
         """
@@ -78,7 +78,7 @@ class Dataset():
 
         return neighbours[:k]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.datapoints)
 
 class DataPoint():
@@ -102,7 +102,7 @@ class DataPoint():
         """
         return sum([abs(p - q) for p, q in zip(self.features, datapoint_2.features)])
 
-    def distance(self, datapoint_2, distance_method: DistanceMethod):
+    def distance(self, datapoint_2, distance_method: DistanceMethod) -> float:
         """
         Returns distance [Manhattan or euclidean] to another point.
         """
