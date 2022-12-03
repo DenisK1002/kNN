@@ -27,6 +27,6 @@ Loading Dataset... Done.
 ```
 
 ### Leave-one-out experiment
-The [loo experiment](kNN.py?line=76) will iterate over all points in the dataset and assign them individually as the test datapoint.
+The [loo experiment](kNN.py#L76) will iterate over all points in the dataset and assign them individually as the test datapoint.
 The other n-1 datapoints are used for training.
 The result of the predictions of all test datapoints is accumulated and printed out to the terminal.
