@@ -5,36 +5,28 @@ Sake of the program is to test different datasets on the kNN algorithm and evalu
 ## Usage
 It can be used entirely by command-line <br/>
 Example <br/>
-`python kNN.py iris.csv 1 euclidean`
+`python kNN.py 150 iris.csv 1 euclidean`
 
 Arguments:
-1. path to dataset as csv file
-2. the amount of neighbours a datapoint needs to consider
-3. the distance calculation method. There is euclidean and manhattan as valid distance arguments.
+1. max size of datapoints to be read
+2. path to dataset as csv file
+3. the amount of neighbours a datapoint needs to consider
+4. the distance calculation method. There is euclidean and manhattan as valid distance arguments.
 
-The default parameters are "", 1, "euclidean"
+The default parameters are dataset_filename="", k=1, distance_method="euclidean".
+Max-size argument needs to be provided
 
 ## kNN-Implementation
-Executing the python program will run the kNN algorithm on specified arguments. <br/>
-It first will load the dataset into memory and split it into a train and test set by a ration of 80:20.
-Afterwards an evaluation on the test data is done.
-The algorithm will predict the class of each of the datapoint in the test data and calculates how often it correctly
-classified a datapoint.
+
 
 Example output for: <br/>
-`python kNN.py agk-ue08-p1.csv 1 euclidean`
+`python kNN.py 6 agk-ue08-p1.csv 1 euclidean`
 ```
-Training kNN... Done.
-Evaluating Model... Done.
-
-----Results----
-
-Predicted 1 out of 1 correctly
-Test error rate: 0.0
+Loading Dataset... Done.
+5 / 6 correctly classified (0.8333)
 ```
 
-Since in the agk-ue08-p1.csv are 5 datapoints, 4 of them are used for training and 1 is used for testing.
-
-### Splitting Dataset into train and test data
-As mentioned the dataset is split into train and test data in the [split_train_test()](/utils.py?line=20) function in the utils.py utility file.
-As you may observe the selection of test data is random for the sake of avoiding repetition when executing the algorithm with the same parameters multiple times.
+### Leave-one-out experiment
+The [loo experiment](kNN.py?line=76) will iterate over all points in the dataset and assign them individually as the test datapoint.
+The other n-1 datapoints are used for training.
+The result of the predictions of all test datapoints is accumulated and printed out to the terminal.

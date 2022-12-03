@@ -51,7 +51,7 @@ class kNN():
         """
         Fits the training data to the model.
         """
-        print(f"\nTraining Model...", end="")
+        print(f"Loading Datatset...", end="")
         dataset = Dataset(self.dataset_filename, self.max_size)
         self.dataset = dataset
         print(" Done.")

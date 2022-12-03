@@ -1,5 +1,5 @@
 agk-ue08-p1.csv
 iris.csv
-mnist.csv
+../cmake-build-debug/mnist.csv
 /__pycache__
 test.py
