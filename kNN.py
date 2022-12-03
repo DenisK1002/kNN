@@ -55,11 +55,11 @@ class kNN():
         self.model = dataset_train
         print(" Done.")
 
-        return self.evaluate(dataset_test)
+        #return self.evaluate(dataset_test)
 
     def predict(self, datapoint, k):
         """
-        Classifies datapoint to a class using 
+        Classifies datapoint to a class using model
         """
         neighbours = self.model.k_Neighbours(datapoint, k, self.distance_method)
         count_classes = {}
@@ -71,6 +71,21 @@ class kNN():
         
         # return the class with the highest occurence in respect to datapoints neighbours
         return list(sorted(count_classes.items(), key=lambda c: c[1], reverse=True))[0][0]
+
+    def leave_one_out_experiment(self):
+        """
+        Performs leave one out experiment over all datapoints in the dataset.
+        It tests the classification prediction for each datapoint with given k.
+        """
+        dataset = Dataset(self.dataset_filename)
+        correctly_classified = 0
+        for i in range(len(dataset)-1):
+            train, test = dataset.leave_one_out(i)
+            if self.predict(test, self.k) == test.category:
+                correctly_classified += 1
+        
+        percentage = correctly_classified / len(dataset)
+        print(f"{correctly_classified} / {len(dataset)} correctly classified ({percentage:.4f})")
 
 
 

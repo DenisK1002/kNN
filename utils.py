@@ -1,5 +1,6 @@
 import math
 import random
+from copy import deepcopy
 
 class DistanceMethod:
     manhattan = "manhattan"
@@ -18,6 +19,20 @@ class Dataset():
         self.datapoints = self.init_datapoints()
         
         self.header = []
+
+    def leave_one_out(self, index):
+        """
+        Splits the dataset into 1 test datapoint and n-1 train datapoints
+        """
+        test = self.datapoints[index]
+
+        # copy dataset without test datapoint
+        train = Dataset(self.dataset_filename, self.max_size)
+        train.datapoints = deepcopy(self.datapoints)
+        train.datapoints.pop(index)
+        train.header = self.header
+
+        return train, test
 
     def split_train_test(self, ratio=0.8):
         """
@@ -62,6 +77,9 @@ class Dataset():
             neighbours.pop(0)
 
         return neighbours[:k]
+
+    def __len__(self):
+        return len(self.datapoints)
 
 class DataPoint():
     """
