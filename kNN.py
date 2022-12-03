@@ -6,7 +6,8 @@ from utils import *
 import sys
 
 class kNN():
-    def __init__(self, dataset_filename = "", k = 1, distance_method = "euclidean"):
+    def __init__(self, max_size, dataset_filename = "", k = 1, distance_method = "euclidean"):
+        self.max_size = max_size
         self.dataset_filename = dataset_filename
         self.model = None
         self.distance_method = distance_method
@@ -50,7 +51,7 @@ class kNN():
         Fits the training data to the model.
         """
         print(f"\nTraining kNN...", end="")
-        dataset = Dataset(self.dataset_filename)
+        dataset = Dataset(self.dataset_filename, self.max_size)
         dataset_train, dataset_test = dataset.split_train_test()
         self.model = dataset_train
         print(" Done.")
@@ -77,18 +78,15 @@ class kNN():
         Performs leave one out experiment over all datapoints in the dataset.
         It tests the classification prediction for each datapoint with given k.
         """
-        dataset = Dataset(self.dataset_filename)
+        dataset = Dataset(self.dataset_filename, self.max_size)
         correctly_classified = 0
-        for i in range(len(dataset)-1):
+        for i in range(len(dataset)):
             train, test = dataset.leave_one_out(i)
             if self.predict(test, self.k) == test.category:
                 correctly_classified += 1
         
         percentage = correctly_classified / len(dataset)
         print(f"{correctly_classified} / {len(dataset)} correctly classified ({percentage:.4f})")
-
-
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:

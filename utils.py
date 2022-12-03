@@ -10,7 +10,7 @@ class DistanceMethod:
         return ["manhattan", "euclidean"]
 
 class Dataset():
-    def __init__(self, dataset_filename, max_size=500):
+    def __init__(self, dataset_filename, max_size=160):
         self.dataset_filename = dataset_filename
 
         # max size of dataset
