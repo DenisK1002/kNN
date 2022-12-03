@@ -58,11 +58,11 @@ class kNN():
         
         self.leave_one_out_experiment()
 
-    def predict(self, dataset, datapoint, k) -> int:
+    def predict(self, train, datapoint, k) -> int:
         """
         Classifies datapoint to a class using model
         """
-        neighbours = dataset.k_Neighbours(datapoint, k, self.distance_method)
+        neighbours = train.k_Neighbours(datapoint, k, self.distance_method)
         count_classes = {}
         for n in neighbours:
             if n.category in count_classes.keys():
