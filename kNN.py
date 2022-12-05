@@ -71,7 +71,8 @@ class kNN():
         
         # return the class with the highest occurence in respect to datapoints neighbours
         return list(sorted(count_classes.items(), key=lambda c: c[1], reverse=True))[0][0]
-
+    
+    @measure_runtime
     def leave_one_out_experiment(self):
         """
         Performs leave one out experiment over all datapoints in the dataset.

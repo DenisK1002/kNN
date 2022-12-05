@@ -4,6 +4,7 @@ Utility file
 
 import math
 import random
+import time
 from copy import deepcopy
 
 class DistanceMethod:
@@ -24,8 +25,8 @@ class Dataset():
         
         self.header = []
 
-        if not datapoints:
-            self.init_dataset()
+        if self.datapoints is None:
+           self.datapoints = self.init_dataset()
 
     def leave_one_out(self, index):
         """
@@ -34,8 +35,7 @@ class Dataset():
         test = self.datapoints[index]
 
         # copy dataset without test datapoint
-        train = Dataset(self.dataset_filename, self.max_size)
-        train.datapoints = deepcopy(self.datapoints)
+        train = Dataset(self.dataset_filename, self.max_size, datapoints=deepcopy(self.datapoints))
         train.datapoints.pop(index)
         train.header = self.header
 
@@ -122,3 +122,15 @@ class DataPoint():
 
     def __repr__(self) -> str:
         return f"{self.features} | {self.category}"
+
+
+def measure_runtime(func):
+        """
+        Wrapper function to measure runtime of given function
+        """
+        def wrap(*args):
+            start_time = time.time()
+            func(*args)
+            end_time = time.time()
+            print(f"execution of {func.__name__} took {end_time - start_time} seconds")
+        return wrap
