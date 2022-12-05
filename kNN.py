@@ -52,8 +52,7 @@ class kNN():
         Fits the training data to the model.
         """
         print(f"Loading Datatset...", end="")
-        dataset = Dataset(self.dataset_filename, self.max_size)
-        self.dataset = dataset
+        self.dataset = Dataset(self.dataset_filename, self.max_size)
         print(" Done.")
         
         self.leave_one_out_experiment()

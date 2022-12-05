@@ -3,3 +3,4 @@ iris.csv
 ../cmake-build-debug/mnist.csv
 /__pycache__
 test.py
+mnist.csv

@@ -14,15 +14,18 @@ class DistanceMethod:
         return ["manhattan", "euclidean"]
 
 class Dataset():
-    def __init__(self, dataset_filename, max_size=160):
+    def __init__(self, dataset_filename, max_size=160, datapoints=None):
         self.dataset_filename = dataset_filename
 
         # max size of dataset
         self.max_size = max_size
 
-        self.datapoints = self.init_datapoints()
+        self.datapoints = datapoints
         
         self.header = []
+
+        if not datapoints:
+            self.init_dataset()
 
     def leave_one_out(self, index):
         """
@@ -52,7 +55,7 @@ class Dataset():
         
         return self, test
 
-    def init_datapoints(self) -> list:
+    def init_dataset(self) -> list:
         """
         Reading csv file and creating datapoints.
         Returns list of [DataPoints]
